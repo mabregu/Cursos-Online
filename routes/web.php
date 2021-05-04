@@ -18,6 +18,11 @@ Route::get('/', 'WelcomeController@index')->name('welcome');
 
 Auth::routes();
 
+Route::post(
+    'stripe/webhook',
+    'StripeWebHookController@handleWebhook'
+);
+
 Route::group(['prefix' => 'courses', 'as' => 'courses.'], function () {
     Route::get('/', 'CourseController@index')
         ->name('index');
@@ -70,6 +75,17 @@ Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teach
         ->name('coupons.update');
     Route::delete('/coupons/{coupon}', 'TeacherController@destroyCoupon')
         ->name('coupons.destroy');
+});
+
+//TEACHER
+Route::group(['prefix' => 'student', 'as' => 'student.', 'middleware' => ['auth']], function () {
+    Route::get('/', 'StudentController@index')
+        ->name('index');
+
+    Route::get("credit-card", 'BillingController@creditCardForm')
+        ->name("billing.credit_card_form");
+    Route::post("credit-card", 'BillingController@processCreditCardForm')
+        ->name("billing.process_credit_card");
 });
 
 Route::get('/add-course-to-cart/{course}', 'StudentController@addCourseToCart')
