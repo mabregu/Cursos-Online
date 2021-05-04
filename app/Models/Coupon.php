@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\Hashidable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -39,7 +41,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Coupon extends Model
 {
-    use HasFactory;
+    use HasFactory, Hashidable, SoftDeletes;
 
     const PERCENT = 'PERCENT';
     const PRICE = 'PRICE';
@@ -76,6 +78,14 @@ class Coupon extends Model
         return $builder
             ->where("user_id", auth()->id())
             ->paginate();
+    }
+
+    public function scopeAvailable(Builder $builder, string $code) {
+        return $builder
+            ->where("enabled", true)
+            ->where("code", $code)
+            ->where('expires_at', '>=', now())
+            ->orWhereNull('expires_at');
     }
 
     public static function discountTypes() {

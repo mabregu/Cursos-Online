@@ -4,13 +4,14 @@ namespace App\Providers;
 
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Coupon;
 use App\Models\Course;
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -65,9 +66,9 @@ class RouteServiceProvider extends ServiceProvider
             return $this->getModel(Course::class, $value);
         });
 
-        // Route::bind('coupon', function ($value, $route) {
-        //     return $this->getModel(Coupon::class, $value);
-        // });
+        Route::bind('coupon', function ($value, $route) {
+            return $this->getModel(Coupon::class, $value);
+        });
 
         // Route::bind('order', function ($value, $route) {
         //     return $this->getModel(Order::class, $value);
