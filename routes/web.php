@@ -77,7 +77,7 @@ Route::group(['prefix' => 'teacher', 'as' => 'teacher.', 'middleware' => ['teach
         ->name('coupons.destroy');
 });
 
-//TEACHER
+//STUDENTS
 Route::group(['prefix' => 'student', 'as' => 'student.', 'middleware' => ['auth']], function () {
     Route::get('/', 'StudentController@index')
         ->name('index');
@@ -98,7 +98,10 @@ Route::get('/remove-course-from-cart/{course}', 'StudentController@removeCourseF
 Route::post('/apply-coupon', 'StudentController@applyCoupon')
     ->name('apply_coupon');
 
+//CHECKOUT
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/checkout', 'CheckoutController@index')
         ->name('checkout_form');
+    Route::post('/checkout', 'CheckoutController@processOrder')
+        ->name('process_checkout');
 });

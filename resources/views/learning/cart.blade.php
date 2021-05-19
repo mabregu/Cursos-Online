@@ -7,7 +7,7 @@
 @section("content")
     @inject("cart", "App\Services\Cart")
     <div class="container">
-        @include('partials.learning.car_content')
+        @include('partials.learning.cart_content')
 
         @if ($cart->hasProducts())
             <div class="row">
